@@ -23,7 +23,7 @@ protected:
 	float m_aspectRatio{};
 	float m_nearPlane{};
 	float m_farPlane{};
-	float m_radius = 12;
+	float m_radius = 15;
 
 	glm::mat4 m_viewMatrixInverse{1};
 	glm::mat4 m_projectionMatrix{1};

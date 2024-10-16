@@ -10,6 +10,8 @@ static constexpr float nearPlane = 0.1f;
 static constexpr float farPlane = 1000.0f;
 static constexpr glm::vec3 boxColor = {0, 0.5f, 1.0f};
 
+static constexpr float ceilingThickness = 0.2f;
+static constexpr float ceilingSize = 3;
 static constexpr float springFreeLength = 5;
 static constexpr float springThickness = 0.1f;
 static constexpr float weightSize = 1;
@@ -23,21 +25,18 @@ Scene::Scene(const glm::ivec2& windowSize) :
 	m_weight{m_shaderProgram, boxColor},
 	m_simulation
 	{
-		[this] (float pos)
+		[this] (float weightPos, float equilibriumPos)
 		{
-			setWeightPos(pos);
+			setWeightAndEquilibriumPos(weightPos, equilibriumPos);
 		}
 	}
 {
-	static constexpr float ceilingThickness = 0.2f;
-	static constexpr float ceilingSize = 3;
-
 	m_ceiling.setScale({ceilingSize, ceilingThickness, ceilingSize});
 	m_weight.setScale({weightSize, weightSize, weightSize});
 
-	m_ceiling.setPosition({0, weightSize / 2 + springFreeLength + ceilingThickness / 2, 0});
+	setWeightAndEquilibriumPos(0, 0);
 
-	setWeightPos(0);
+	m_simulation.start();
 }
 
 void Scene::update()
@@ -92,12 +91,13 @@ void Scene::setAspectRatio(float aspectRatio)
 	m_camera.setAspectRatio(aspectRatio);
 }
 
-void Scene::setWeightPos(float pos)
+void Scene::setWeightAndEquilibriumPos(float weightPos, float equilibriumPos)
 {
-	float springLength = springFreeLength - pos;
+	float springLength = springFreeLength - weightPos + equilibriumPos;
 
 	m_spring.setScale({springThickness, springLength, springThickness});
-
-	m_spring.setPosition({0, pos + weightSize / 2 + springLength / 2, 0});
-	m_weight.setPosition({0, pos, 0});
+	
+	m_ceiling.setPosition({0, weightPos + weightSize / 2 + springLength + ceilingThickness / 2, 0});
+	m_spring.setPosition({0, weightPos + weightSize / 2 + springLength / 2, 0});
+	m_weight.setPosition({0, weightPos, 0});
 }

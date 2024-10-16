@@ -33,5 +33,5 @@ private:
 	Simulation m_simulation;
 
 	void setAspectRatio(float aspectRatio);
-	void setWeightPos(float pos);
+	void setWeightAndEquilibriumPos(float weightPos, float equilibriumPos);
 };
