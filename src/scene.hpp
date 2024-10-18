@@ -21,6 +21,8 @@ public:
 	void moveYCamera(float y);
 	void zoomCamera(float zoom);
 
+	Simulation& getSimulation();
+
 private:
 	ShaderProgram m_shaderProgram{"src/shaders/VS.glsl", "src/shaders/FS.glsl"};
 	const glm::ivec2& m_windowSize{};

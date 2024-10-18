@@ -1,5 +1,6 @@
 #pragma once
 
+#include "guis/controlPanel.hpp"
 #include "scene.hpp"
 
 #include <glad/glad.h>
@@ -17,4 +18,5 @@ public:
 
 private:
 	Scene& m_scene;
+	ControlPanel m_controlPanel;
 };

@@ -5,7 +5,8 @@
 #include <imgui/backends/imgui_impl_opengl3.h>
 
 GUI::GUI(GLFWwindow* window, Scene& scene, const glm::ivec2& windowSize) :
-	m_scene{scene}
+	m_scene{scene},
+	m_controlPanel{scene.getSimulation(), windowSize}
 {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -28,6 +29,8 @@ void GUI::update()
 	ImGui_ImplGlfw_NewFrame();
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui::NewFrame();
+
+	m_controlPanel.update();
 }
 
 void GUI::render()

@@ -35,8 +35,6 @@ Scene::Scene(const glm::ivec2& windowSize) :
 	m_weight.setScale({weightSize, weightSize, weightSize});
 
 	setWeightAndEquilibriumPos(0, 0);
-
-	m_simulation.start();
 }
 
 void Scene::update()
@@ -84,6 +82,11 @@ void Scene::moveYCamera(float y)
 void Scene::zoomCamera(float zoom)
 {
 	m_camera.zoom(zoom);
+}
+
+Simulation& Scene::getSimulation()
+{
+	return m_simulation;
 }
 
 void Scene::setAspectRatio(float aspectRatio)

@@ -165,6 +165,7 @@
     <ClCompile Include="src\box.cpp" />
     <ClCompile Include="src\cameras\camera.cpp" />
     <ClCompile Include="src\cameras\perspectiveCamera.cpp" />
+    <ClCompile Include="src\guis\controlPanel.cpp" />
     <ClCompile Include="src\guis\gui.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\mesh.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="src\cameras\camera.hpp" />
     <ClInclude Include="src\cameras\cameraType.hpp" />
     <ClInclude Include="src\cameras\perspectiveCamera.hpp" />
+    <ClInclude Include="src\guis\controlPanel.hpp" />
     <ClInclude Include="src\guis\gui.hpp" />
     <ClInclude Include="src\mesh.hpp" />
     <ClInclude Include="src\model.hpp" />
