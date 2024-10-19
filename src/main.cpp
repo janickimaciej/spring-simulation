@@ -6,11 +6,9 @@
 
 int main()
 {
-	static constexpr glm::ivec2 initialWindowSize{1900, 1000};
-
-	Window window{initialWindowSize};
-	Scene scene{window.size()};
-	GUI gui{window.getPtr(), scene, window.size()};
+	Window window{};
+	Scene scene{window.viewportSize()};
+	GUI gui{window.getPtr(), scene};
 	window.setWindowData(scene, gui);
 
 	while (!window.shouldClose())

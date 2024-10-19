@@ -10,7 +10,7 @@
 class Scene
 {
 public:
-	Scene(const glm::ivec2& windowSize);
+	Scene(const glm::ivec2& viewportSize);
 	void update();
 	void render() const;
 	void updateWindowSize();
@@ -25,7 +25,7 @@ public:
 
 private:
 	ShaderProgram m_shaderProgram{"src/shaders/VS.glsl", "src/shaders/FS.glsl"};
-	const glm::ivec2& m_windowSize{};
+	glm::ivec2 m_viewportSize{};
 	PerspectiveCamera m_camera;
 
 	Box m_ceiling;

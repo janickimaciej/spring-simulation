@@ -2,8 +2,8 @@
 
 #include <cmath>
 
-Simulation::Simulation(const Callback& setWeightAndEquilibriumPosCallback) :
-	m_setWeightAndEquilibriumPosCallback{setWeightAndEquilibriumPosCallback}
+Simulation::Simulation(const Callback& setXAndWCallback) :
+	m_setXAndWCallback{setXAndWCallback}
 { }
 
 void Simulation::update()
@@ -13,18 +13,27 @@ void Simulation::update()
 		return;
 	}
 
-	float t = getTime();
-	int iterations = static_cast<int>(t / m_dt);
+	float frameT = getTime();
+	int iterations = static_cast<int>(frameT / m_dt);
 
-	while (m_states.size() <= iterations)
+	while (m_t.size() <= iterations)
 	{
-		glm::vec2 prevState = m_states.back();
-		float prevT = (m_states.size() - 1) * m_dt;
-		glm::vec2 state = prevState + m_dt * rhs(prevState, prevT);
-		m_states.push_back(state);
+		glm::vec2 prevState = {m_x.back(), m_v.back()};
+		float prevT = (m_t.size() - 1) * m_dt;
+		float t = prevT + m_dt;
+		glm::vec2 state = prevState + m_dt * getRHS(prevState, prevT);
+
+		m_t.push_back(t);
+		m_x.push_back(state.x);
+		m_v.push_back(state.y);
+		m_a.push_back(getRHS(state, t).y);
+		m_w.push_back(getW(t));
+		m_f.push_back(getF(t, state.x));
+		m_g.push_back(getG(state.y));
+		m_h.push_back(getH(t));
 	}
 
-	m_setWeightAndEquilibriumPosCallback(m_states.back().x, getW(iterations * m_dt));
+	m_setXAndWCallback(m_x.back(), getW(iterations * m_dt));
 }
 
 void Simulation::stop()
@@ -39,9 +48,27 @@ void Simulation::start()
 		return;
 	}
 
-	m_states.clear();
-	m_states.push_back({m_x0, m_v0});
-	m_t0 = std::chrono::system_clock::now();
+	m_t.clear();
+	m_x.clear();
+	m_v.clear();
+	m_a.clear();
+	m_w.clear();
+	m_f.clear();
+	m_g.clear();
+	m_h.clear();
+
+	glm::vec2 rhs = getRHS({m_x0, m_v0}, 0);
+
+	m_t.push_back(0);
+	m_x.push_back(m_x0);
+	m_v.push_back(m_v0);
+	m_a.push_back(rhs.y);
+	m_w.push_back(getW(0));
+	m_f.push_back(getF(0, m_x0));
+	m_g.push_back(getG(m_v0));
+	m_h.push_back(getH(0));
+
+	resetTime();
 	m_running = true;
 }
 
@@ -52,6 +79,11 @@ float Simulation::getDT() const
 
 void Simulation::setDT(float dt)
 {
+	if (m_running)
+	{
+		return;
+	}
+
 	m_dt = dt;
 }
 
@@ -92,6 +124,11 @@ float Simulation::getX0() const
 
 void Simulation::setX0(float x0)
 {
+	if (m_running)
+	{
+		return;
+	}
+
 	m_x0 = x0;
 }
 
@@ -102,6 +139,11 @@ float Simulation::getV0() const
 
 void Simulation::setV0(float v0)
 {
+	if (m_running)
+	{
+		return;
+	}
+
 	m_v0 = v0;
 }
 
@@ -205,11 +247,61 @@ void Simulation::setHT0(float t0)
 	m_hT0 = t0;
 }
 
+int Simulation::getIterations() const
+{
+	return static_cast<int>(m_t.size());
+}
+
+const float* Simulation::getTVector() const
+{
+	return m_t.data();
+}
+
+const float* Simulation::getXVector() const
+{
+	return m_x.data();
+}
+
+const float* Simulation::getVVector() const
+{
+	return m_v.data();
+}
+
+const float* Simulation::getAVector() const
+{
+	return m_a.data();
+}
+
+const float* Simulation::getWVector() const
+{
+	return m_w.data();
+}
+
+const float* Simulation::getFVector() const
+{
+	return m_f.data();
+}
+
+const float* Simulation::getGVector() const
+{
+	return m_g.data();
+}
+
+const float* Simulation::getHVector() const
+{
+	return m_h.data();
+}
+
 float Simulation::getTime() const
 {
 	std::chrono::time_point<std::chrono::system_clock> t = std::chrono::system_clock::now();
 	std::chrono::duration<float> deltaT = t - m_t0;
 	return deltaT.count();
+}
+
+void Simulation::resetTime()
+{
+	m_t0 = std::chrono::system_clock::now();
 }
 
 float Simulation::getW(float t) const
@@ -234,6 +326,16 @@ float Simulation::getW(float t) const
 	return {};
 }
 
+float Simulation::getF(float t, float x) const
+{
+	return m_c * (getW(t) - x);
+}
+
+float Simulation::getG(float v) const
+{
+	return -m_k * v;
+}
+
 float Simulation::getH(float t) const
 {
 	switch (m_hFunctionType)
@@ -256,11 +358,11 @@ float Simulation::getH(float t) const
 	return {};
 }
 
-glm::vec2 Simulation::rhs(const glm::vec2& state, float t) const
+glm::vec2 Simulation::getRHS(const glm::vec2& state, float t) const
 {
 	return
 		{
 			state.y,
-			(m_c * (getW(t) - state.x) - m_k * state.y + getH(t)) / m_m
+			(getF(t, state.x) + getG(state.y) + getH(t)) / m_m
 		};
 }

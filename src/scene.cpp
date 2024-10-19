@@ -16,9 +16,9 @@ static constexpr float springFreeLength = 5;
 static constexpr float springThickness = 0.1f;
 static constexpr float weightSize = 1;
 
-Scene::Scene(const glm::ivec2& windowSize) :
-	m_windowSize{windowSize},
-	m_camera{fovYDeg, static_cast<float>(windowSize.x) / windowSize.y, nearPlane, farPlane,
+Scene::Scene(const glm::ivec2& viewportSize) :
+	m_viewportSize{viewportSize},
+	m_camera{fovYDeg, static_cast<float>(viewportSize.x) / viewportSize.y, nearPlane, farPlane,
 		m_shaderProgram},
 	m_ceiling{m_shaderProgram, boxColor},
 	m_spring{m_shaderProgram, boxColor},
@@ -56,7 +56,7 @@ void Scene::render() const
 
 void Scene::updateWindowSize()
 {
-	setAspectRatio(static_cast<float>(m_windowSize.x) / m_windowSize.y);
+	setAspectRatio(static_cast<float>(m_viewportSize.x) / m_viewportSize.y);
 }
 
 void Scene::addPitchCamera(float pitchRad)
@@ -99,7 +99,7 @@ void Scene::setWeightAndEquilibriumPos(float weightPos, float equilibriumPos)
 	float springLength = springFreeLength - weightPos + equilibriumPos;
 
 	m_spring.setScale({springThickness, springLength, springThickness});
-	
+
 	m_ceiling.setPosition({0, weightPos + weightSize / 2 + springLength + ceilingThickness / 2, 0});
 	m_spring.setPosition({0, weightPos + weightSize / 2 + springLength / 2, 0});
 	m_weight.setPosition({0, weightPos, 0});

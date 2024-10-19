@@ -22,6 +22,13 @@
     <ClCompile Include="src\box.cpp" />
     <ClCompile Include="src\simulation.cpp" />
     <ClCompile Include="src\guis\controlPanel.cpp" />
+    <ClCompile Include="dep\implot\implot.cpp" />
+    <ClCompile Include="dep\implot\implot_demo.cpp" />
+    <ClCompile Include="dep\implot\implot_items.cpp" />
+    <ClCompile Include="src\guis\statePlot.cpp" />
+    <ClCompile Include="src\guis\forcesPlot.cpp" />
+    <ClCompile Include="src\guis\stateTrajectoryPlot.cpp" />
+    <ClCompile Include="src\guis\equilibriumPlot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dep\imgui\backends\imgui_impl_glfw.h" />
@@ -46,6 +53,12 @@
     <ClInclude Include="src\box.hpp" />
     <ClInclude Include="src\simulation.hpp" />
     <ClInclude Include="src\guis\controlPanel.hpp" />
+    <ClInclude Include="dep\implot\implot.h" />
+    <ClInclude Include="dep\implot\implot_internal.h" />
+    <ClInclude Include="src\guis\statePlot.hpp" />
+    <ClInclude Include="src\guis\forcesPlot.hpp" />
+    <ClInclude Include="src\guis\stateTrajectoryPlot.hpp" />
+    <ClInclude Include="src\guis\equilibriumPlot.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\FS.glsl" />

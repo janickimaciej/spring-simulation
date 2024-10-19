@@ -4,17 +4,17 @@
 
 #include <algorithm>
 
-ControlPanel::ControlPanel(Simulation& simulation, const glm::ivec2& windowSize) :
+ControlPanel::ControlPanel(Simulation& simulation, const glm::vec2& pos, const glm::vec2& size) :
 	m_simulation{simulation},
-	m_windowSize{windowSize}
+	m_pos{pos},
+	m_size{size}
 { }
 
 void ControlPanel::update()
 {
-	ImGui::SetNextWindowPos({0, 0}, ImGuiCond_Always);
-	ImGui::SetNextWindowSize({200, static_cast<float>(m_windowSize.y)}, ImGuiCond_Always);
-	ImGui::Begin("controlPanel", nullptr,
-		ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground);
+	ImGui::SetNextWindowPos({m_pos.x, m_pos.y}, ImGuiCond_Always);
+	ImGui::SetNextWindowSize({m_size.x, m_size.y}, ImGuiCond_Always);
+	ImGui::Begin("controlPanel", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
 
 	if (ImGui::Button("Start"))
 	{
@@ -95,7 +95,7 @@ void ControlPanel::update()
 			static_cast<int>(Simulation::FunctionType::sinus));
 		m_simulation.setWFunctionType(static_cast<Simulation::FunctionType>(wFunctionType));
 	}
-	
+
 	Simulation::FunctionType wFunctionType = m_simulation.getWFunctionType();
 
 	if (wFunctionType != Simulation::FunctionType::none)
@@ -114,20 +114,20 @@ void ControlPanel::update()
 	{
 		updateValue
 		(
-			[this] () { return m_simulation.getWOmega(); },
-			[this] (float omega) { m_simulation.setWOmega(omega); },
+			[this] () { return glm::degrees(m_simulation.getWOmega()); },
+			[this] (float omega) { m_simulation.setWOmega(glm::radians(omega)); },
 			"omega##w",
 			0.1f
 		);
 
 		updateValue
 		(
-			[this] () { return m_simulation.getWPhi(); },
-			[this] (float phi) { m_simulation.setWPhi(phi); },
+			[this] () { return glm::degrees(m_simulation.getWPhi()); },
+			[this] (float phi) { m_simulation.setWPhi(glm::radians(phi)); },
 			"phi##w"
 		);
 	}
-	
+
 	if (wFunctionType == Simulation::FunctionType::step)
 	{
 		updateValue
@@ -137,7 +137,7 @@ void ControlPanel::update()
 			"t0##w"
 		);
 	}
-	
+
 	separator();
 
 	ImGui::Text("h(t)");
@@ -176,20 +176,20 @@ void ControlPanel::update()
 	{
 		updateValue
 		(
-			[this] () { return m_simulation.getHOmega(); },
-			[this] (float omega) { m_simulation.setHOmega(omega); },
+			[this] () { return glm::degrees(m_simulation.getHOmega()); },
+			[this] (float omega) { m_simulation.setHOmega(glm::radians(omega)); },
 			"omega##h",
 			0.1f
 		);
 
 		updateValue
 		(
-			[this] () { return m_simulation.getHPhi(); },
-			[this] (float phi) { m_simulation.setHPhi(phi); },
+			[this] () { return glm::degrees(m_simulation.getHPhi()); },
+			[this] (float phi) { m_simulation.setHPhi(glm::radians(phi)); },
 			"phi##h"
 		);
 	}
-	
+
 	if (hFunctionType == Simulation::FunctionType::step)
 	{
 		updateValue
@@ -199,7 +199,7 @@ void ControlPanel::update()
 			"t0##h"
 		);
 	}
-	
+
 	ImGui::End();
 }
 
@@ -209,6 +209,8 @@ void ControlPanel::updateValue(const std::function<float()>& get,
 	static const std::string suffix = "##controlPanel";
 	static constexpr float stepPrecision = 0.1f;
 	static const std::string format = "%.2f";
+
+	ImGui::PushItemWidth(100);
 
 	float value = get();
 	float prevValue = value;
@@ -222,6 +224,8 @@ void ControlPanel::updateValue(const std::function<float()>& get,
 	{
 		set(value);
 	}
+
+	ImGui::PopItemWidth();
 }
 
 void ControlPanel::separator()

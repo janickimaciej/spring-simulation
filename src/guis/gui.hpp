@@ -1,6 +1,10 @@
 #pragma once
 
 #include "guis/controlPanel.hpp"
+#include "guis/equilibriumPlot.hpp"
+#include "guis/forcesPlot.hpp"
+#include "guis/statePlot.hpp"
+#include "guis/stateTrajectoryPlot.hpp"
 #include "scene.hpp"
 
 #include <glad/glad.h>
@@ -10,7 +14,7 @@
 class GUI
 {
 public:
-	GUI(GLFWwindow* window, Scene& scene, const glm::ivec2& windowSize);
+	GUI(GLFWwindow* window, Scene& scene);
 	~GUI();
 
 	void update();
@@ -19,4 +23,8 @@ public:
 private:
 	Scene& m_scene;
 	ControlPanel m_controlPanel;
+	StateTrajectoryPlot m_stateTrajectoryPlot;
+	StatePlot m_statePlot;
+	ForcesPlot m_forcesPlot;
+	EquilibriumPlot m_equilibriumPlot;
 };

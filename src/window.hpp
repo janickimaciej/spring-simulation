@@ -10,10 +10,10 @@
 class Window
 {
 public:
-	Window(const glm::ivec2& initialSize);
+	Window();
 	~Window();
 
-	const glm::ivec2& size() const;
+	glm::ivec2 viewportSize() const;
 	void setWindowData(Scene& scene, GUI& gui);
 	bool shouldClose() const;
 	void swapBuffers() const;
@@ -21,8 +21,11 @@ public:
 	GLFWwindow* getPtr();
 
 private:
+	static constexpr glm::ivec2 m_size{1900, 1000};
+	static constexpr glm::ivec2 m_viewportPos{1200, 0};
+	static constexpr glm::ivec2 m_viewportSize = m_size - m_viewportPos;
+
 	GLFWwindow* m_windowPtr{};
-	glm::ivec2 m_size{};
 	Scene* m_scene{};
 	GUI* m_gui{};
 
@@ -30,7 +33,6 @@ private:
 
 	glm::vec2 cursorPos() const;
 
-	static void resizeCallback(GLFWwindow* windowPtr, int width, int height);
 	static void cursorMovementCallback(GLFWwindow* windowPtr, double x, double y);
 	static void scrollCallback(GLFWwindow* windowPtr, double, double yOffset);
 };

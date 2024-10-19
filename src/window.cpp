@@ -2,22 +2,20 @@
 
 #include <string>
 
-Window::Window(const glm::ivec2& initialSize) :
-	m_size{initialSize}
+Window::Window()
 {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	static const std::string windowTitle = "cad-opengl";
-	m_windowPtr = glfwCreateWindow(initialSize.x, initialSize.y, windowTitle.c_str(), nullptr,
-		nullptr);
+	m_windowPtr = glfwCreateWindow(m_size.x, m_size.y, windowTitle.c_str(), nullptr, nullptr);
 	glfwSetWindowUserPointer(m_windowPtr, this);
 	glfwMakeContextCurrent(m_windowPtr);
 	glfwSwapInterval(1);
 
-	glfwSetFramebufferSizeCallback(m_windowPtr, resizeCallback);
 	glfwSetCursorPosCallback(m_windowPtr, cursorMovementCallback);
 	glfwSetScrollCallback(m_windowPtr, scrollCallback);
 
@@ -25,6 +23,8 @@ Window::Window(const glm::ivec2& initialSize) :
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_MULTISAMPLE);
+
+	glViewport(m_viewportPos.x, m_viewportPos.y, m_viewportSize.x, m_viewportSize.y);
 }
 
 Window::~Window()
@@ -32,14 +32,15 @@ Window::~Window()
 	glfwTerminate();
 }
 
-const glm::ivec2& Window::size() const
+glm::ivec2 Window::viewportSize() const
 {
-	return m_size;
+	return m_viewportSize;
 }
 
 void Window::setWindowData(Scene& scene, GUI& gui)
 {
 	m_scene = &scene;
+	m_scene->updateWindowSize();
 	m_gui = &gui;
 }
 
@@ -69,20 +70,6 @@ glm::vec2 Window::cursorPos() const
 	double y{};
 	glfwGetCursorPos(m_windowPtr, &x, &y);
 	return {static_cast<float>(x), static_cast<float>(y)};
-}
-
-void Window::resizeCallback(GLFWwindow* windowPtr, int width, int height)
-{
-	if (width == 0 || height == 0)
-	{
-		return;
-	}
-
-	Window* window = static_cast<Window*>(glfwGetWindowUserPointer(windowPtr));
-
-	window->m_size = {width, height};
-	window->m_scene->updateWindowSize();
-	glViewport(0, 0, width, height);
 }
 
 void Window::cursorMovementCallback(GLFWwindow* windowPtr, double x, double y)
@@ -128,10 +115,10 @@ void Window::scrollCallback(GLFWwindow* windowPtr, double, double yOffset)
 	Window* window = static_cast<Window*>(glfwGetWindowUserPointer(windowPtr));
 
 	glm::vec2 cursorPos = window->cursorPos();
-	/*if (cursorPos.x <= LeftPanel::width || cursorPos.x >= window->m_size.x - RightPanel::width)
+	if (cursorPos.x <= window->m_viewportPos.x || cursorPos.y <= window->m_viewportPos.y)
 	{
 		return;
-	}*/
+	}
 
 	static constexpr float sensitivity = 1.1f;
 	window->m_scene->zoomCamera(std::pow(sensitivity, static_cast<float>(yOffset)));

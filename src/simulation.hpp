@@ -20,11 +20,11 @@ public:
 		sinus
 	};
 
-	Simulation(const Callback& setWeightAndEquilibriumPosCallback);
+	Simulation(const Callback& setXAndWCallback);
 	void update();
 	void stop();
 	void start();
-	
+
 	float getDT() const;
 	void setDT(float dt);
 	float getM() const;
@@ -60,34 +60,54 @@ public:
 	float getHT0() const;
 	void setHT0(float t0);
 
+	int getIterations() const;
+	const float* getTVector() const;
+	const float* getXVector() const;
+	const float* getVVector() const;
+	const float* getAVector() const;
+	const float* getWVector() const;
+	const float* getFVector() const;
+	const float* getGVector() const;
+	const float* getHVector() const;
+
 private:
-	Callback m_setWeightAndEquilibriumPosCallback{};
+	Callback m_setXAndWCallback{};
 	bool m_running = false;
-	
+
 	float m_dt = 0.01f;
 	float m_m = 1;
 	float m_c = 1;
-	float m_k = 0.1f;
+	float m_k = 1;
 	float m_x0 = 0;
 	float m_v0 = 0;
 
 	FunctionType m_wFunctionType = FunctionType::none;
 	float m_wA = 1;
-	float m_wOmega = 1;
+	float m_wOmega = glm::radians(90.0f);
 	float m_wPhi = 0;
-	float m_wT0 = 0;
+	float m_wT0 = 1;
 
 	FunctionType m_hFunctionType = FunctionType::none;
 	float m_hA = 1;
-	float m_hOmega = 1;
+	float m_hOmega = glm::radians(90.0f);
 	float m_hPhi = 0;
-	float m_hT0 = 0;
+	float m_hT0 = 1;
 
 	std::chrono::time_point<std::chrono::system_clock> m_t0{};
-	std::vector<glm::vec2> m_states{};
+	std::vector<float> m_t{};
+	std::vector<float> m_x{};
+	std::vector<float> m_v{};
+	std::vector<float> m_a{};
+	std::vector<float> m_w{};
+	std::vector<float> m_f{};
+	std::vector<float> m_g{};
+	std::vector<float> m_h{};
 
 	float getTime() const;
+	void resetTime();
 	float getW(float t) const;
+	float getF(float t, float x) const;
+	float getG(float v) const;
 	float getH(float t) const;
-	glm::vec2 rhs(const glm::vec2& state, float t) const;
+	glm::vec2 getRHS(const glm::vec2& state, float t) const;
 };
