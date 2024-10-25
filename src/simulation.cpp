@@ -252,6 +252,15 @@ int Simulation::getIterations() const
 	return static_cast<int>(m_t.size());
 }
 
+float Simulation::getT() const
+{
+	if (m_t.empty())
+	{
+		return 0;
+	}
+	return m_t.back();
+}
+
 const float* Simulation::getTVector() const
 {
 	return m_t.data();

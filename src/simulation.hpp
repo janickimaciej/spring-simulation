@@ -61,6 +61,7 @@ public:
 	void setHT0(float t0);
 
 	int getIterations() const;
+	float getT() const;
 	const float* getTVector() const;
 	const float* getXVector() const;
 	const float* getVVector() const;

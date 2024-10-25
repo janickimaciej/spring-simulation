@@ -20,6 +20,7 @@ private:
 	glm::vec2 m_size;
 
 	void updateValue(const std::function<float()>& get, const std::function<void(float)>& set,
-		const std::string& name, std::optional<float> min = std::nullopt);
+		const std::string& name, std::optional<float> min = std::nullopt,
+		const std::string& format = "%.2f");
 	void separator();
 };

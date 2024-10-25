@@ -28,6 +28,10 @@ void ControlPanel::update()
 		m_simulation.stop();
 	}
 
+	ImGui::Spacing();
+
+	ImGui::Text("t = %.2f", m_simulation.getT());
+
 	separator();
 
 	updateValue
@@ -35,7 +39,8 @@ void ControlPanel::update()
 		[this] () { return m_simulation.getDT(); },
 		[this] (float dt) { m_simulation.setDT(dt); },
 		"dt",
-		0.01f
+		0.001f,
+		"%.3f"
 	);
 
 	updateValue
@@ -204,11 +209,11 @@ void ControlPanel::update()
 }
 
 void ControlPanel::updateValue(const std::function<float()>& get,
-	const std::function<void(float)>& set, const std::string& name, std::optional<float> min)
+	const std::function<void(float)>& set, const std::string& name, std::optional<float> min,
+	const std::string& format)
 {
 	static const std::string suffix = "##controlPanel";
 	static constexpr float stepPrecision = 0.1f;
-	static const std::string format = "%.2f";
 
 	ImGui::PushItemWidth(100);
 
