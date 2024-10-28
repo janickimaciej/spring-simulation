@@ -11,13 +11,15 @@
 class ControlPanel
 {
 public:
-	ControlPanel(Simulation& simulation, const glm::vec2& pos, const glm::vec2& size);
+	ControlPanel(Simulation& simulation, const glm::vec2& pos, const glm::vec2& size,
+		bool& autoFitPlots);
 	void update();
 
 private:
 	Simulation& m_simulation;
-	glm::vec2 m_pos;
-	glm::vec2 m_size;
+	const glm::vec2 m_pos;
+	const glm::vec2 m_size;
+	bool& m_autoFitPlots;
 
 	void updateValue(const std::function<float()>& get, const std::function<void(float)>& set,
 		const std::string& name, std::optional<float> min = std::nullopt,

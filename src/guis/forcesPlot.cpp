@@ -3,10 +3,12 @@
 #include <imgui/imgui.h>
 #include <implot/implot.h>
 
-ForcesPlot::ForcesPlot(Simulation& simulation, const glm::vec2& pos, const glm::vec2& size) :
+ForcesPlot::ForcesPlot(Simulation& simulation, const glm::vec2& pos, const glm::vec2& size,
+	const bool& autoFitPlots) :
 	m_simulation{simulation},
 	m_pos{pos},
-	m_size{size}
+	m_size{size},
+	m_autoFitPlots{autoFitPlots}
 { }
 
 void ForcesPlot::update()
@@ -19,7 +21,8 @@ void ForcesPlot::update()
 
 	if (ImPlot::BeginPlot("Forces", {m_size.x - offset, m_size.y - offset}))
 	{
-		ImPlot::SetupAxes("", "", ImPlotAxisFlags_AutoFit, ImPlotAxisFlags_AutoFit);
+		ImPlot::SetupAxes("", "", m_autoFitPlots ? ImPlotAxisFlags_AutoFit : 0,
+			m_autoFitPlots ? ImPlotAxisFlags_AutoFit : 0);
 		ImPlot::PlotLine("f", m_simulation.getTVector(), m_simulation.getFVector(),
 			m_simulation.getIterations());
 		ImPlot::PlotLine("g", m_simulation.getTVector(), m_simulation.getGVector(),

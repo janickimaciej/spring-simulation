@@ -4,10 +4,12 @@
 
 #include <algorithm>
 
-ControlPanel::ControlPanel(Simulation& simulation, const glm::vec2& pos, const glm::vec2& size) :
+ControlPanel::ControlPanel(Simulation& simulation, const glm::vec2& pos, const glm::vec2& size,
+	bool& autoFitPlots) :
 	m_simulation{simulation},
 	m_pos{pos},
-	m_size{size}
+	m_size{size},
+	m_autoFitPlots{autoFitPlots}
 { }
 
 void ControlPanel::update()
@@ -204,6 +206,10 @@ void ControlPanel::update()
 			"t0##h"
 		);
 	}
+
+	separator();
+
+	ImGui::Checkbox("Auto fit plots", &m_autoFitPlots);
 
 	ImGui::End();
 }

@@ -31,6 +31,7 @@ void Simulation::update()
 		m_f.push_back(getF(t, state.x));
 		m_g.push_back(getG(state.y));
 		m_h.push_back(getH(t));
+		m_wMinusX.push_back(m_w.back() - m_x.back());
 	}
 
 	m_setXAndWCallback(m_x.back(), getW(iterations * m_dt));
@@ -56,6 +57,7 @@ void Simulation::start()
 	m_f.clear();
 	m_g.clear();
 	m_h.clear();
+	m_wMinusX.clear();
 
 	glm::vec2 rhs = getRHS({m_x0, m_v0}, 0);
 
@@ -67,6 +69,7 @@ void Simulation::start()
 	m_f.push_back(getF(0, m_x0));
 	m_g.push_back(getG(m_v0));
 	m_h.push_back(getH(0));
+	m_wMinusX.push_back(m_w.back() - m_x.back());
 
 	resetTime();
 	m_running = true;
@@ -299,6 +302,11 @@ const float* Simulation::getGVector() const
 const float* Simulation::getHVector() const
 {
 	return m_h.data();
+}
+
+const float* Simulation::getWMinusXVector() const
+{
+	return m_wMinusX.data();
 }
 
 float Simulation::getTime() const

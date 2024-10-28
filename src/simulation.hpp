@@ -70,6 +70,7 @@ public:
 	const float* getFVector() const;
 	const float* getGVector() const;
 	const float* getHVector() const;
+	const float* getWMinusXVector() const;
 
 private:
 	Callback m_setXAndWCallback{};
@@ -103,6 +104,7 @@ private:
 	std::vector<float> m_f{};
 	std::vector<float> m_g{};
 	std::vector<float> m_h{};
+	std::vector<float> m_wMinusX{};
 
 	float getTime() const;
 	void resetTime();

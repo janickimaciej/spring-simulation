@@ -27,4 +27,6 @@ private:
 	StatePlot m_statePlot;
 	ForcesPlot m_forcesPlot;
 	EquilibriumPlot m_equilibriumPlot;
+
+	bool m_autofitPlots = true;
 };

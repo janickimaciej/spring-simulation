@@ -4,10 +4,11 @@
 #include <implot/implot.h>
 
 EquilibriumPlot::EquilibriumPlot(Simulation& simulation, const glm::vec2& pos,
-	const glm::vec2& size) :
+	const glm::vec2& size, const bool& autoFitPlots) :
 	m_simulation{simulation},
 	m_pos{pos},
-	m_size{size}
+	m_size{size},
+	m_autoFitPlots{autoFitPlots}
 { }
 
 void EquilibriumPlot::update()
@@ -21,10 +22,13 @@ void EquilibriumPlot::update()
 
 	if (ImPlot::BeginPlot("Equilibrium", {m_size.x - offset, m_size.y - offset}))
 	{
-		ImPlot::SetupAxes("", "", ImPlotAxisFlags_AutoFit, ImPlotAxisFlags_AutoFit);
+		ImPlot::SetupAxes("", "", m_autoFitPlots ? ImPlotAxisFlags_AutoFit : 0,
+			m_autoFitPlots ? ImPlotAxisFlags_AutoFit : 0);
 		ImPlot::PlotLine("x", m_simulation.getTVector(), m_simulation.getXVector(),
 			m_simulation.getIterations());
 		ImPlot::PlotLine("w", m_simulation.getTVector(), m_simulation.getWVector(),
+			m_simulation.getIterations());
+		ImPlot::PlotLine("w - x", m_simulation.getTVector(), m_simulation.getWMinusXVector(),
 			m_simulation.getIterations());
 		ImPlot::EndPlot();
 	}

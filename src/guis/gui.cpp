@@ -7,11 +7,11 @@
 
 GUI::GUI(GLFWwindow* window, Scene& scene) :
 	m_scene{scene},
-	m_controlPanel{scene.getSimulation(), {0, 0}, {360, 640}},
-	m_stateTrajectoryPlot{scene.getSimulation(), {0, 640}, {360, 360}},
-	m_statePlot{scene.getSimulation(), {360, 0}, {840, 333}},
-	m_forcesPlot{scene.getSimulation(), {360, 333}, {840, 333}},
-	m_equilibriumPlot{scene.getSimulation(), {360, 666}, {840, 334}}
+	m_controlPanel{scene.getSimulation(), {0, 0}, {360, 640}, m_autofitPlots},
+	m_stateTrajectoryPlot{scene.getSimulation(), {0, 640}, {360, 360}, m_autofitPlots},
+	m_statePlot{scene.getSimulation(), {360, 0}, {840, 333}, m_autofitPlots},
+	m_forcesPlot{scene.getSimulation(), {360, 333}, {840, 333}, m_autofitPlots},
+	m_equilibriumPlot{scene.getSimulation(), {360, 666}, {840, 334}, m_autofitPlots}
 {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
