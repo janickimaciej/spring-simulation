@@ -15,8 +15,8 @@
     <ClCompile Include="src\shaderProgram.cpp" />
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\guis\gui.cpp" />
-    <ClCompile Include="src\cameras\camera.cpp" />
-    <ClCompile Include="src\cameras\perspectiveCamera.cpp" />
+    <ClCompile Include="src\camera\camera.cpp" />
+    <ClCompile Include="src\camera\perspectiveCamera.cpp" />
     <ClCompile Include="src\mesh.cpp" />
     <ClCompile Include="src\model.cpp" />
     <ClCompile Include="src\box.cpp" />
@@ -44,9 +44,8 @@
     <ClInclude Include="src\shaderProgram.hpp" />
     <ClInclude Include="src\scene.hpp" />
     <ClInclude Include="src\guis\gui.hpp" />
-    <ClInclude Include="src\cameras\perspectiveCamera.hpp" />
-    <ClInclude Include="src\cameras\camera.hpp" />
-    <ClInclude Include="src\cameras\cameraType.hpp" />
+    <ClInclude Include="src\camera\perspectiveCamera.hpp" />
+    <ClInclude Include="src\camera\camera.hpp" />
     <ClInclude Include="src\mesh.hpp" />
     <ClInclude Include="src\vertex.hpp" />
     <ClInclude Include="src\model.hpp" />

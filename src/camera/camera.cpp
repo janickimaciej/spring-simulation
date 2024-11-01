@@ -1,4 +1,4 @@
-#include "cameras/camera.hpp"
+#include "camera/camera.hpp"
 
 #include <glm/gtc/constants.hpp>
 

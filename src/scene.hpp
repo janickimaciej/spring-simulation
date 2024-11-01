@@ -1,7 +1,7 @@
 #pragma once
 
 #include "box.hpp"
-#include "cameras/perspectiveCamera.hpp"
+#include "camera/perspectiveCamera.hpp"
 #include "shaderProgram.hpp"
 #include "simulation.hpp"
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cameras/camera.hpp"
+#include "camera/camera.hpp"
 #include "shaderProgram.hpp"
 
 class PerspectiveCamera : public Camera

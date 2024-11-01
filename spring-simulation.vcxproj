@@ -166,8 +166,8 @@
     <ClCompile Include="dep\implot\implot_demo.cpp" />
     <ClCompile Include="dep\implot\implot_items.cpp" />
     <ClCompile Include="src\box.cpp" />
-    <ClCompile Include="src\cameras\camera.cpp" />
-    <ClCompile Include="src\cameras\perspectiveCamera.cpp" />
+    <ClCompile Include="src\camera\camera.cpp" />
+    <ClCompile Include="src\camera\perspectiveCamera.cpp" />
     <ClCompile Include="src\guis\controlPanel.cpp" />
     <ClCompile Include="src\guis\equilibriumPlot.cpp" />
     <ClCompile Include="src\guis\forcesPlot.cpp" />
@@ -195,9 +195,8 @@
     <ClInclude Include="dep\implot\implot.h" />
     <ClInclude Include="dep\implot\implot_internal.h" />
     <ClInclude Include="src\box.hpp" />
-    <ClInclude Include="src\cameras\camera.hpp" />
-    <ClInclude Include="src\cameras\cameraType.hpp" />
-    <ClInclude Include="src\cameras\perspectiveCamera.hpp" />
+    <ClInclude Include="src\camera\camera.hpp" />
+    <ClInclude Include="src\camera\perspectiveCamera.hpp" />
     <ClInclude Include="src\guis\controlPanel.hpp" />
     <ClInclude Include="src\guis\equilibriumPlot.hpp" />
     <ClInclude Include="src\guis\forcesPlot.hpp" />
