@@ -1,13 +1,13 @@
 #include "camera/camera.hpp"
 
+#include "shaderPrograms.hpp"
+
 #include <glm/gtc/constants.hpp>
 
-Camera::Camera(float aspectRatio, float nearPlane, float farPlane,
-	const ShaderProgram& shaderProgram) :
+Camera::Camera(float aspectRatio, float nearPlane, float farPlane) :
 	m_aspectRatio{aspectRatio},
 	m_nearPlane{nearPlane},
-	m_farPlane{farPlane},
-	m_shaderProgram{shaderProgram}
+	m_farPlane{farPlane}
 {
 	updateViewMatrix();
 }
@@ -86,12 +86,12 @@ void Camera::updateViewMatrix()
 	glm::vec3 up = glm::cross(direction, right);
 
 	m_viewMatrixInverse =
-	{
-		right.x, right.y, right.z, 0,
-		up.x, up.y, up.z, 0,
-		direction.x, direction.y, direction.z, 0,
-		pos.x, pos.y, pos.z, 1
-	};
+		{
+			right.x, right.y, right.z, 0,
+			up.x, up.y, up.z, 0,
+			direction.x, direction.y, direction.z, 0,
+			pos.x, pos.y, pos.z, 1
+		};
 }
 
 glm::vec3 Camera::getPos() const
@@ -107,7 +107,7 @@ glm::vec3 Camera::getPos() const
 
 void Camera::updateShaders() const
 {
-	m_shaderProgram.use();
-	m_shaderProgram.setUniform("projectionViewMatrix", getMatrix());
-	m_shaderProgram.setUniform("cameraPos", getPos());
+	ShaderPrograms::mesh->use();
+	ShaderPrograms::mesh->setUniform("projectionViewMatrix", getMatrix());
+	ShaderPrograms::mesh->setUniform("cameraPos", getPos());
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "guis/gui.hpp"
+#include "gui/gui.hpp"
 #include "scene.hpp"
 
 #include <glad/glad.h>
@@ -13,11 +13,12 @@ public:
 	Window();
 	~Window();
 
-	glm::ivec2 viewportSize() const;
-	void setWindowData(Scene& scene, GUI& gui);
+	void init(Scene& scene);
 	bool shouldClose() const;
 	void swapBuffers() const;
 	void pollEvents() const;
+
+	glm::ivec2 viewportSize() const;
 	GLFWwindow* getPtr();
 
 private:
@@ -27,12 +28,25 @@ private:
 
 	GLFWwindow* m_windowPtr{};
 	Scene* m_scene{};
-	GUI* m_gui{};
 
 	glm::vec2 m_lastCursorPos{};
 
-	glm::vec2 cursorPos() const;
+	void cursorMovementCallback(double x, double y);
+	void scrollCallback(double, double yOffset);
 
-	static void cursorMovementCallback(GLFWwindow* windowPtr, double x, double y);
-	static void scrollCallback(GLFWwindow* windowPtr, double, double yOffset);
+	void updateViewport() const;
+	glm::vec2 getCursorPos() const;
+	bool isButtonPressed(int button);
+	bool isKeyPressed(int key);
+	bool isCursorInGUI();
+
+	template <auto callback, typename... Args>
+	static void callbackWrapper(GLFWwindow* windowPtr, Args... args);
 };
+
+template <auto callback, typename... Args>
+void Window::callbackWrapper(GLFWwindow* windowPtr, Args... args)
+{
+	Window* window = static_cast<Window*>(glfwGetWindowUserPointer(windowPtr));
+	(window->*callback)(args...);
+}

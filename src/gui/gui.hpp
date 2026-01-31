@@ -1,10 +1,10 @@
 #pragma once
 
-#include "guis/controlPanel.hpp"
-#include "guis/equilibriumPlot.hpp"
-#include "guis/forcesPlot.hpp"
-#include "guis/statePlot.hpp"
-#include "guis/stateTrajectoryPlot.hpp"
+#include "gui/controlPanel.hpp"
+#include "gui/equilibriumPlot.hpp"
+#include "gui/forcesPlot.hpp"
+#include "gui/statePlot.hpp"
+#include "gui/stateTrajectoryPlot.hpp"
 #include "scene.hpp"
 
 #include <glad/glad.h>
@@ -21,7 +21,6 @@ public:
 	void render();
 
 private:
-	Scene& m_scene;
 	ControlPanel m_controlPanel;
 	StateTrajectoryPlot m_stateTrajectoryPlot;
 	StatePlot m_statePlot;

@@ -1,4 +1,4 @@
-#include "guis/stateTrajectoryPlot.hpp"
+#include "gui/stateTrajectoryPlot.hpp"
 
 #include <imgui/imgui.h>
 #include <implot/implot.h>

@@ -1,4 +1,4 @@
-#include "guis/controlPanel.hpp"
+#include "gui/controlPanel.hpp"
 
 #include <imgui/imgui.h>
 

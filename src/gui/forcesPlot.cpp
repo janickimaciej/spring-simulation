@@ -1,4 +1,4 @@
-#include "guis/forcesPlot.hpp"
+#include "gui/forcesPlot.hpp"
 
 #include <imgui/imgui.h>
 #include <implot/implot.h>

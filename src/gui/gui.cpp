@@ -1,4 +1,4 @@
-#include "guis/gui.hpp"
+#include "gui/gui.hpp"
 
 #include <imgui/imgui.h>
 #include <imgui/backends/imgui_impl_glfw.h>
@@ -6,7 +6,6 @@
 #include <implot/implot.h>
 
 GUI::GUI(GLFWwindow* window, Scene& scene) :
-	m_scene{scene},
 	m_controlPanel{scene.getSimulation(), {0, 0}, {360, 640}, m_autofitPlots},
 	m_stateTrajectoryPlot{scene.getSimulation(), {0, 640}, {360, 360}, m_autofitPlots},
 	m_statePlot{scene.getSimulation(), {360, 0}, {840, 333}, m_autofitPlots},

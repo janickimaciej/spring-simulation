@@ -1,4 +1,4 @@
-#include "guis/equilibriumPlot.hpp"
+#include "gui/equilibriumPlot.hpp"
 
 #include <imgui/imgui.h>
 #include <implot/implot.h>
