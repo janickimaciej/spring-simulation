@@ -4,8 +4,8 @@
 
 #include <glm/gtc/constants.hpp>
 
-Camera::Camera(float aspectRatio, float nearPlane, float farPlane) :
-	m_aspectRatio{aspectRatio},
+Camera::Camera(const glm::ivec2& viewportSize, float nearPlane, float farPlane) :
+	m_aspectRatio{static_cast<float>(viewportSize.x) / viewportSize.y},
 	m_nearPlane{nearPlane},
 	m_farPlane{farPlane}
 {
@@ -22,11 +22,18 @@ glm::mat4 Camera::getMatrix() const
 	return m_projectionMatrix * glm::inverse(m_viewMatrixInverse);
 }
 
-void Camera::setAspectRatio(float aspectRatio)
+void Camera::moveX(float x)
 {
-	m_aspectRatio = aspectRatio;
+	m_targetPos += m_radius * glm::mat3{m_viewMatrixInverse} * glm::vec3{x, 0, 0};
 
-	updateProjectionMatrix();
+	updateViewMatrix();
+}
+
+void Camera::moveY(float y)
+{
+	m_targetPos += m_radius * glm::mat3{m_viewMatrixInverse} * glm::vec3{0, y, 0};
+
+	updateViewMatrix();
 }
 
 void Camera::addPitch(float pitchRad)
@@ -63,20 +70,6 @@ void Camera::addYaw(float yawRad)
 	updateViewMatrix();
 }
 
-void Camera::moveX(float x)
-{
-	m_targetPos += m_radius * glm::mat3{m_viewMatrixInverse} * glm::vec3{x, 0, 0};
-
-	updateViewMatrix();
-}
-
-void Camera::moveY(float y)
-{
-	m_targetPos += m_radius * glm::mat3{m_viewMatrixInverse} * glm::vec3{0, y, 0};
-
-	updateViewMatrix();
-}
-
 void Camera::updateViewMatrix()
 {
 	glm::vec3 pos = getPos();
@@ -92,6 +85,11 @@ void Camera::updateViewMatrix()
 			direction.x, direction.y, direction.z, 0,
 			pos.x, pos.y, pos.z, 1
 		};
+}
+
+float Camera::getAspectRatio() const
+{
+	return m_aspectRatio;
 }
 
 glm::vec3 Camera::getPos() const

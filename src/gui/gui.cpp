@@ -1,8 +1,8 @@
 #include "gui/gui.hpp"
 
-#include <imgui/imgui.h>
 #include <imgui/backends/imgui_impl_glfw.h>
 #include <imgui/backends/imgui_impl_opengl3.h>
+#include <imgui/imgui.h>
 #include <implot/implot.h>
 
 GUI::GUI(GLFWwindow* window, Scene& scene) :
@@ -17,7 +17,6 @@ GUI::GUI(GLFWwindow* window, Scene& scene) :
 	ImPlot::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init();
 }

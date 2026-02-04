@@ -9,7 +9,7 @@ class Model
 {
 public:
 	virtual void render() const = 0;
-	void setPosition(const glm::vec3& position);
+	void setPos(const glm::vec3& pos);
 	void setYaw(float yawRad);
 	void setPitch(float pitchRad);
 	void setRoll(float rollRad);
@@ -23,7 +23,7 @@ private:
 
 	glm::mat4 m_modelMatrix{1};
 
-	glm::vec3 m_position{};
+	glm::vec3 m_pos{};
 	float m_yawRad = 0;
 	float m_pitchRad = 0;
 	float m_rollRad = 0;

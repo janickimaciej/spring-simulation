@@ -5,9 +5,10 @@
 
 #include <glad/glad.h>
 
-static constexpr float fovYDeg = 60.0f;
 static constexpr float nearPlane = 0.1f;
 static constexpr float farPlane = 1000.0f;
+static constexpr float fovYDeg = 60.0f;
+
 static constexpr glm::vec3 boxColor = {0, 0.5f, 1.0f};
 
 static constexpr float ceilingThickness = 0.2f;
@@ -17,7 +18,7 @@ static constexpr float springThickness = 0.1f;
 static constexpr float weightSize = 1;
 
 Scene::Scene(const glm::ivec2& viewportSize) :
-	m_camera{fovYDeg, static_cast<float>(viewportSize.x) / viewportSize.y, nearPlane, farPlane},
+	m_camera{viewportSize, nearPlane, farPlane, fovYDeg},
 	m_ceiling{boxColor},
 	m_spring{boxColor},
 	m_weight{boxColor},
@@ -29,6 +30,10 @@ Scene::Scene(const glm::ivec2& viewportSize) :
 		}
 	}
 {
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_MULTISAMPLE);
+
 	m_ceiling.setScale({ceilingSize, ceilingThickness, ceilingSize});
 	m_weight.setScale({weightSize, weightSize, weightSize});
 
@@ -82,18 +87,13 @@ Simulation& Scene::getSimulation()
 	return m_simulation;
 }
 
-void Scene::setAspectRatio(float aspectRatio)
-{
-	m_camera.setAspectRatio(aspectRatio);
-}
-
 void Scene::setWeightAndEquilibriumPos(float weightPos, float equilibriumPos)
 {
 	float springLength = springFreeLength - weightPos + equilibriumPos;
 
 	m_spring.setScale({springThickness, springLength, springThickness});
 
-	m_ceiling.setPosition({0, weightPos + weightSize / 2 + springLength + ceilingThickness / 2, 0});
-	m_spring.setPosition({0, weightPos + weightSize / 2 + springLength / 2, 0});
-	m_weight.setPosition({0, weightPos, 0});
+	m_ceiling.setPos({0, weightPos + weightSize / 2 + springLength + ceilingThickness / 2, 0});
+	m_spring.setPos({0, weightPos + weightSize / 2 + springLength / 2, 0});
+	m_weight.setPos({0, weightPos, 0});
 }
