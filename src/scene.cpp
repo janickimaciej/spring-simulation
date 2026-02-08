@@ -7,7 +7,7 @@
 
 static constexpr float nearPlane = 0.1f;
 static constexpr float farPlane = 1000.0f;
-static constexpr float fovYDeg = 60.0f;
+static constexpr float initFOVYDeg = 60.0f;
 
 static constexpr glm::vec3 boxColor = {0, 0.5f, 1.0f};
 
@@ -18,7 +18,7 @@ static constexpr float springThickness = 0.1f;
 static constexpr float weightSize = 1;
 
 Scene::Scene(const glm::ivec2& viewportSize) :
-	m_camera{viewportSize, nearPlane, farPlane, fovYDeg},
+	m_camera{viewportSize, nearPlane, farPlane, initFOVYDeg},
 	m_ceiling{boxColor},
 	m_spring{boxColor},
 	m_weight{boxColor},
